@@ -1,5 +1,5 @@
 # AFSC-Display-Assistant
-Software Engineering I Project
+Software Engineering I Project<br>
 A website for submitting and approving slides for the Allen Family Student Center displays.
 
 There are two sides of the website:
