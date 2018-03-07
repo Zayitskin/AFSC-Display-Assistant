@@ -3,28 +3,52 @@
 		<link rel="stylesheet" type="text/css" href="ludas.css">
 	</head>
 	<body>
-		<table>
+		<table id="admins">
 			<tr>
 				<th>Name</th>
 				<th>Privileges</th>
 				<th>Notification Frequency</th>
 				<th></th>
 			</tr>
-			<tr>
-				<td>Zachary Itskin</td>
-				<td>Administrator</td>
-				<td>
-					<a>Remind: </a>
-					<select>
-						<option value="hour">Hourly</option>
-						<option value="day">Daily</option>
-						<option value="week">Weekly</option>
-					</select>
-				</td>
-				<td>
-					<center><button>Delete</button></center>
-				</td>
-			</tr>
 		</table>
+		
+		<script>
+			var table = document.getElementById("admins");
+			var admins = ["Zachary Itskin", "Johnathan", "Ellen"];
+			var admin;
+			for(admin in admins)
+			{
+				table.insertRow();
+				var row = table.rows[table.rows.length-1];
+				row.insertCell();
+				var cell = row.cells[0];
+				cell.innerHTML = admins[admin];
+				row.insertCell();
+				cell = row.cells[1];
+				cell.innerHTML = "Administrator";
+				row.insertCell();
+				cell = row.cells[2];
+				var select = document.createElement("SELECT");
+				var hourly = document.createElement("option")
+				hourly.text = "Hourly";
+				select.add(hourly);
+				var daily = document.createElement("option")
+				daily.text = "Daily";
+				select.add(daily);
+				var weekly = document.createElement("option")
+				weekly.text = "Weekly";
+				select.add(weekly);
+				cell.appendChild(select);
+				row.insertCell();
+				cell = row.cells[3];
+				var div = document.createElement("DIV");
+				div.setAttribute("align", "center");
+				var button = document.createElement("BUTTON");
+				button.innerHTML = "Delete";
+				div.appendChild(button);
+				cell.appendChild(div);
+			}
+		</script>
+		
 	</body>
 </html>
