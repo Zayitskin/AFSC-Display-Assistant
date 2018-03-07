@@ -1,0 +1,6 @@
+Variables: lowerCamelCase
+
+Methods: lowerCamelCase
+
+PHP Objects in design document are just PHP files
+PHP Class variables should be made as global variables inside of their respective files
