@@ -13,3 +13,14 @@ td, th {
 tr:nth-child(even) {
     background-color: #eeeeee;
 }
+
+h {
+    font-size: 32;
+    font-family: arial, sans-serif;
+}
+
+button {
+    font-size: 32;
+    margin-top: 18px;
+    font-family: arial, sans-serif;
+}

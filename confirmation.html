@@ -1,0 +1,32 @@
+<html>
+    <meta charset="utf-8">
+    
+	<head>
+		<link rel="stylesheet" type="text/css" href="ludas.css">
+	</head>
+	
+	<body>
+	    <center>
+	        <h>
+		    Do you wish to submit another slide?
+		    </h>
+	    </center>
+		<center>
+		    <button id="yesButton" onclick="onYesPress()">Yes</button>
+		    <button id="noButton" onclick="onNoPress()">No</button>
+		</center>
+		
+		<script>
+	    function onYesPress()
+	    {
+	        document.location.href = "slideSubmission.html";
+	    }
+	    
+	    function onNoPress()
+	    {
+	        //document.getElementById("submitButton").innerHTML = "Taco";
+	        document.location.href = "login.html";
+	    }
+	    </script>
+	</body>
+</html>

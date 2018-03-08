@@ -1,0 +1,42 @@
+<html>
+    <meta charset="utf-8">
+    
+	<head>
+		<link rel="stylesheet" type="text/css" href="ludas.css">
+	</head>
+	
+	<body>
+		<center><h>LUDAS Slide Submission</h></center>
+        <table>
+			<tr>
+				<th>File</th>
+				<th>Start Day</th>
+				<th>Start Time</th>
+				<th>End Date</th>
+				<th>End Time</th>
+				<th>Comments</th>
+			</tr>
+			<tr>
+			    <td>
+			        <input type="file" name="pic" id="pic" accept=".ppt, .pptx" />
+			    </td>
+				<td><input id="date" type="date"></td>
+				<td><input id="time" type="time"></td>
+				<td><input id="date" type="date"></td>
+				<td><input id="time" type="time"></td>
+				<td>
+				    <textarea name="textarea" rows="10" cols="50"></textarea>
+				</td>
+			</tr>
+		</table>
+		<center><button id="submitButton" onclick="onSubmitPress()">Submit</button></center>
+		
+		<script>
+	    function onSubmitPress()
+	    {
+	        //document.getElementById("submitButton").innerHTML = "Taco";
+	        document.location.href = "confirmation.html";
+	    }
+	    </script>
+	</body>
+</html>
