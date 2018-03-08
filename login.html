@@ -1,5 +1,31 @@
+
 <html>
-  <head>
+	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
 	</head>
+	
+	<body>
+		<h1>LeTourneau University Display Automation System</h1>
+        <p>Sign in with your organization account</p>
+		
+        <form>
+  		User ID: <br>
+  		<input type="text" name="theUsername">
+  		<br>
+  		Password: <br>
+  		<input type="password" name="thePassword"> 
+	</form>
+        
+        <button onclick="myFunction(theUsername,thePassword)">Submit</button>
+       
+        <p id="demo"></p>
+
+        <script>
+		function myFunction(usrnm,pswd) {
+    		document.getElementById("demo").innerHTML =  usrnm + ", " + pswd;
+		}	
+        </script>
+       
+	<body/>
 </html>
+
