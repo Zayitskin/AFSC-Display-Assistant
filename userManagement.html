@@ -1,8 +1,17 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
+		<script>
+			function notHappening()
+			{
+				var p = document.getElementById("text");
+				p.innerHTML = "Yeah, there is no way I am implementing search without a database.";
+			}
+		</script>
 	</head>
 	<body>
-		
+		<input type="text">
+		<button onclick="notHappening()">Search</button>
+		<h id="text"></h>
 	</body>
 </html>
