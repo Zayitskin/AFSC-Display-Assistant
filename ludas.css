@@ -21,3 +21,14 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
     background-color: #ffffff;
 }
+
+h {
+    font-size: 32;
+    font-family: arial, sans-serif;
+}
+
+button {
+    font-size: 32;
+    margin-top: 18px;
+    font-family: arial, sans-serif;
+}
