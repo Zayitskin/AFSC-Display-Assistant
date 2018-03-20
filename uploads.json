@@ -5,10 +5,12 @@
 			"slides": [
 						{
 						"path": "Example.pptx",
+						"date": "2018-03-21",
 						"value": "Approved"
 						},
 						{
 						"path": "Cats.pptx",
+						"date": "2018-03-21",
 						"value": "Undecided"
 						}
 						]
