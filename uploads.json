@@ -1,0 +1,17 @@
+{
+"uploads": [
+			{
+			"user": "zacharyitskin",
+			"slides": [
+						{
+						"path": "Example.pptx",
+						"value": "Approved"
+						},
+						{
+						"path": "Cats.pptx",
+						"value": "Undecided"
+						}
+						]
+			}
+			]
+}
