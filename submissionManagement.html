@@ -1,8 +1,31 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
+		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 	</head>
 	<body>
+		<table id="submissions">
+			<tr>
+				<th>Submittor</th>
+				<th>Slide</th>
+				<th>Date</th>
+				<th>Status</th>
+				<th>
+					<center><button>Update All</button></center>
+				</th>
+			</tr>
+		</table>
+		<script>
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				var slides = JSON.parse(this.responseText);
+				}
+			};
+			xmlhttp.open("GET", "uploads.json", true);
+			xmlhttp.send();
+		</script>
+		<!--
 		<table>
 			<tr>
 				<th>Submittor</th>
@@ -44,5 +67,6 @@
 				<td><center><p>Update Confirmer</p></center></td>
 			</tr>
 		</table>
+		-->
 	</body>
 </html>
