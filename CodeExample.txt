@@ -6,6 +6,32 @@ Topics we need code examples for:
 - How to parse slide count and aspect ratio from ppt/pptx file in PHP
 - Create a PHP method that will run every certain amount of time
 
+<script>
+        var source = new EventSource("upload.php");
+    
+        source.onmessage = function(event)
+        {
+            document.getElementById("result").innerHTML += event.data + "<br>";
+        };
+    </script>
+    
+    header('Content-Type: text/event-stream');
+header('Cache-Control: no-cache');
+
+echo $_POST["startDate"];
+echo " | ";
+echo $_POST["startTime"];
+echo " | ";
+echo $_POST["endDate"];
+echo " | ";
+echo $_POST["endTime"];
+echo " | ";
+echo $_POST["comments"];
+echo "<br>";
+
+flush();
+
+
 
 Powerpoint File Info:
 
@@ -27,3 +53,113 @@ http://wabism.com/html5-file-api-how-to-upload-files-dynamically-using-ajax/
 https://www.w3schools.com/php/php_file_upload.asp
 
 http://php.net/manual/en/simplexml.examples-basic.php
+
+
+-- Uploading File and/or Other Data in Html5 and JQuery:
+
+
+    <title>AJAX UPLOAD</title>
+    
+    <script type="text/javascript" src="jquery-2.0.2.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+        
+            $('#theButton').click(function(){
+
+                var fileList = document.getElementById('theFiles');
+                var file = fileList.files[0];
+                
+                var data = new FormData();
+                data.append('action', 'uploadFile');
+                data.append('fileNameField', file.name);
+                data.append('Arbitrary key', 'arbitrary value');
+                
+                $.ajax({
+                url:'process.php',     //Php file called
+                data:data,
+                processData:false,
+                contentType:false,
+                type:'POST',
+                
+                success:function(msg){  //Called whenever succeed
+                    alert(msg);
+                },
+                
+                failure:function(msg){  //Called whenever failed
+                    alert(msg);
+                }
+                
+                });
+            });
+        });
+    </script>
+    
+    <input type="file" name="File" id="theFiles"/>
+    <input type="button" name="Button" id="theButton">
+    <input type="email" name="Email" id="theEmail">
+    
+</body>
+</html>
+
+-- Inside of process.php
+
+<?php 
+
+//Values inside of the form data will be accessed like $_POST["arbitrary key"]
+//Files uploaded will be accessed using $_FILES[$_POST["fileNameField"]] I believe...
+
+// Any POST to process.php will come to the beginning of the php code,
+// you need to call specific functions based of "action" vale
+
+if($_POST['fileUpload']){
+    //Call file upload function, etc...
+}
+
+//Example for sending back success or failure
+if ($everything_is_ok)
+    {
+        header('Content-Type: application/json');
+        print json_encode($result);
+    }
+else
+    {
+        header('HTTP/1.1 500 Internal Server Booboo');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    }
+
+$target_dir = "uploads/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+// Check if file already exists
+if (file_exists($target_file)) {
+    echo "Sorry, file already exists.";
+    $uploadOk = 0;
+}
+// Check file size
+if ($_FILES["fileToUpload"]["size"] > 500000000) {
+    echo "Sorry, your file is too large.";
+    $uploadOk = 0;
+}
+// Allow certain file formats
+if($imageFileType != "ppt" && $imageFileType != "pptx") {
+    echo "Only PPTX and PPT files are allowed.";
+    $uploadOk = 0;
+}
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+    echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+}
+
+
+?>

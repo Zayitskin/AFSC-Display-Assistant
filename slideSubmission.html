@@ -7,6 +7,7 @@
 	
 	<body>
 		<center><h>LUDAS Slide Submission</h></center>
+	<form id="form" action="upload.php" method="post" enctype="multipart/form-data"> 
         <table>
 			<tr>
 				<th>File</th>
@@ -14,29 +15,65 @@
 				<th>Start Time</th>
 				<th>End Date</th>
 				<th>End Time</th>
-				<th>Comments</th>
+				<th>Comments - Optional</th>
 			</tr>
 			<tr>
 			    <td>
-			        <input type="file" name="pic" id="pic" accept=".ppt, .pptx" />
+			        <!-- fileToUpload is used to get the file from $_FILES[]. -->
+			        <input type="file" name="fileToUpload" id="fileToUpload" accept=".ppt, .pptx" required/>
 			    </td>
-				<td><input id="date" type="date"></td>
-				<td><input id="time" type="time"></td>
-				<td><input id="date" type="date"></td>
-				<td><input id="time" type="time"></td>
+				<td><input id="startDate" name="startDate" type="date" required></td>
+				<td><input id="startTime" name="startTime" type="time" required></td>
+				<td><input id="endDate" name="endDate" type="date" required></td>
+				<td><input id="endTime" name="endTime" type="time" required></td>
 				<td>
-				    <textarea name="textarea" rows="10" cols="50"></textarea>
+				    <textarea id="comments" name="comments" rows="10" cols="50"></textarea>
 				</td>
 			</tr>
 		</table>
-		<center><button id="submitButton" onclick="onSubmitPress()">Submit</button></center>
-		
-		<script>
-	    function onSubmitPress()
+		<center><button id="submitButton" name="submitButton">Submit</button></center>
+		<center id="log"></center>
+	</form>
+	
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+	<script>
+	    $('document').ready(function()
 	    {
-	        //document.getElementById("submitButton").innerHTML = "Taco";
-	        document.location.href = "confirmation.html";
-	    }
-	    </script>
+            $('#submitButton').click(function(event)
+            {
+                event.preventDefault();
+            
+                $.ajax(
+                {
+                    url : $('#form').attr('action'),
+                    type: "POST",
+                    data : new FormData($('#form')[0]),
+                    processData: false,
+                    contentType: false,
+                    success:function(msg)
+                    {
+                        //document.getElementById("log").innerHTML = msg;
+                        
+                        var response = JSON.parse(msg);
+                        
+                        if(response.succeeded == false)
+                        {
+                            alert(response.message);
+                        }
+                        else
+                        {
+                            //alert(response.message);
+                            
+                            window.location.replace("confirmation.html");
+                        }
+                    },
+                    failure:function(msg)
+                    {
+                        alert(msg);
+                    }
+                });
+            })
+    })
+	</script>
 	</body>
 </html>

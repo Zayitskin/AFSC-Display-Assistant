@@ -1,19 +1,25 @@
 {
-"uploads": [
-			{
-			"user": "zacharyitskin",
-			"slides": [
-						{
-						"path": "Example.pptx",
-						"date": "2018-03-21",
-						"value": "Approved"
-						},
-						{
-						"path": "Cats.pptx",
-						"date": "2018-03-21",
-						"value": "Undecided"
-						}
-						]
-			}
-			]
+    "uploads": [
+        {
+            "user": "obama",
+            "slides": [
+                {
+                    "path": "q5ek19m79o8h6s2d.pptx",
+                    "startDate": "",
+                    "startTime": "00:51",
+                    "endDate": "0236-12-05",
+                    "endTime": "00:51",
+                    "value": "Undecided",
+                    "comments": "ASFASFAS"
+                },
+                {
+                    "path": "2i22i4xdxprsw47o.pptx",
+                    "startDate": "0041-12-12",
+                    "startTime": "00:51",
+                    "endDate": "0236-12-05",
+                    "endTime": "00:51",
+                    "value": "Undecided",
+                    "comments": "ASFASFAS"
+                }
+    ]
 }
