@@ -1,4 +1,3 @@
-
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
@@ -6,26 +5,55 @@
 	
 	<body>
 		<h1>LeTourneau University Display Automation System</h1>
-        <p>Sign in with your organization account</p>
+      <p>Sign in with your organization account</p>
 		
-        <form>
-  		User ID: <br>
-  		<input type="text" name="theUsername">
-  		<br>
-  		Password: <br>
-  		<input type="password" name="thePassword"> 
-	</form>
+      <form>
+  		  User ID: <br>
+  		  <input type="text" name="theUsername">
+  		  <br>
+  		  Password: <br>
+  		  <input type="password" name="thePassword"> 
+      </form>
         
-        <button onclick="myFunction(theUsername,thePassword)">Submit</button>
-       
-        <p id="demo"></p>
+      <button id="btn">Submit</button>
 
-        <script>
-		function myFunction(usrnm,pswd) {
-    		document.getElementById("demo").innerHTML =  usrnm + ", " + pswd;
-		}	
+      <div id="LoginAuth"></div>
+        
+      <script>
+
+        var AuthCheckMess = document.getElementById("LoginAuth");
+        var btn = document.getElementById("btn");
+        btn.addEventListener("click",function(){
+          //Get file
+          var ourRequest = new XMLHttpRequest();
+          ourRequest.open('GET','users.json')
+          xhttp.onload = function() {
+              var ourData = JSON.parse(xhttp.responseText);
+              renderHTML.(ourData);
+          };
+          ourRequest.send();
+
+        });
+
+        function CheckAuth(data){
+          var AuthCheck = "Invalid User Name";
+          //Parse through every user
+          for(var i = 0; i < data.length ; i++){
+            
+            if(data[i].user_name == usrnm){
+              if(data[i].password == pswd){
+                AuthCheck = "Valid Username and Password";
+              } else {
+                AuthCheck = "In Correct Password";
+              }
+            } else {
+              AuthCheck = "Invalid User Name";
+            }
+          }
+          AuthCheckMess.insertAdjacentHTML('beforeend',AuthCheck);
+        }
         </script>
-       
+
 	<body/>
 </html>
 
