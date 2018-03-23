@@ -2,6 +2,81 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+		<script>
+			var uploads;
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				uploads = JSON.parse(this.responseText);
+				}
+			};
+			xmlhttp.onload = function() {
+				var table = document.getElementById("submissions");
+				uploads.uploads.forEach(function(upload)
+				{
+					var user = upload.user;
+					upload.slides.forEach(function(slide)
+					{
+						table.insertRow();
+						var row = table.rows[table.rows.length-1];
+						row.insertCell();
+						var cell = row.cells[0];
+						cell.innerHTML = user;
+						row.insertCell();
+						cell = row.cells[1];
+						cell.innerHTML = slide.path;
+						row.insertCell();
+						cell = row.cells[2];
+						cell.innerHTML = slide.startDate + " " + slide.startTime + "\n" + slide.endDate + " " + slide.endTime;
+						row.insertCell();
+						cell = row.cells[3];
+						var form = document.createElement("FORM");
+						form.setAttribute("id", slide.path);
+						var input = document.createElement("INPUT");
+						input.setAttribute("type", "radio");
+						input.setAttribute("value", "Undecided");
+						if(slide.value == "Undecided")
+						{
+							input.checked = true;
+						}
+						form.appendChild(input);
+						var label = document.createElement("LABEL");
+						label.innerHTML = "Undecided";
+						form.appendChild(label);
+						form.appendChild(document.createElement("BR"));
+						input = document.createElement("INPUT");
+						input.setAttribute("type", "radio");
+						input.setAttribute("value", "Approve");
+						if(slide.value == "Approve")
+						{
+							input.checked = true;
+						}
+						form.appendChild(input);
+						label = document.createElement("LABEL");
+						label.innerHTML = "Approve";
+						form.appendChild(label);
+						form.appendChild(document.createElement("BR"));
+						input = document.createElement("INPUT");
+						input.setAttribute("type", "radio");
+						input.setAttribute("value", "Reject");
+						if(slide.value == "Reject")
+						{
+							input.checked = true;
+						}
+						form.appendChild(input);
+						label = document.createElement("LABEL");
+						label.innerHTML = "Reject";
+						form.appendChild(label);
+						cell.appendChild(form);
+						row.insertCell();
+						cell = row.cells[4];
+						cell.innerHTML = slide.comments;
+					});
+				});
+			};
+			xmlhttp.open("GET", "uploads.json", true);
+			xmlhttp.send();
+		</script>
 	</head>
 	<body>
 		<table id="submissions">
@@ -15,58 +90,5 @@
 				</th>
 			</tr>
 		</table>
-		<script>
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-				var slides = JSON.parse(this.responseText);
-				}
-			};
-			xmlhttp.open("GET", "uploads.json", true);
-			xmlhttp.send();
-		</script>
-		<!--
-		<table>
-			<tr>
-				<th>Submittor</th>
-				<th>Slide</th>
-				<th>Date</th>
-				<th></th>
-				<th>
-					<center><button>Update All</button></center>
-				</th>
-			</tr>
-			<tr>
-				<td>Zachary Itskin</td>
-				<td>
-					<center><image src="cat.jpg" alt="" height="50%"></center>
-				</td>
-				<td>03/21/18</td>
-				<td>
-					<form>
-						<input type="radio" name="status">Undecided</input><br>
-						<input type="radio" name="status">Approve</input><br>
-						<input type="radio" name="status">Reject</input>
-					</form>
-				</td>
-				<td><center><p>Update Confirmer</p></center></td>
-			</tr>
-			<tr>
-				<td>Brent Baas</td>
-				<td>
-					<center><image src="dino.jpg" alt="" height="50%"></center>
-				</td>
-				<td>03/21/18</td>
-				<td>
-					<form>
-						<input type="radio" name="status">Undecided</input><br>
-						<input type="radio" name="status">Approve</input><br>
-						<input type="radio" name="status">Reject</input>
-					</form>
-				</td>
-				<td><center><p>Update Confirmer</p></center></td>
-			</tr>
-		</table>
-		-->
 	</body>
 </html>
