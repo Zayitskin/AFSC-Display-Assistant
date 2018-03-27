@@ -1,61 +1,59 @@
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="ludas.css">
-  </head>
-  
-  <body>
-    <h1>LeTourneau University Display Automation System</h1>
-      <p>Sign in with your organization account</p>
+<p>Sign in with your organization account</p>
     
-      <form>
+      <form id="form" action="login.php" method="post" enctype="multipart/form-data">
         User ID: <br>
         <input type="text" name="theUsername" id="theUsername">
         <br>
         Password: <br>
-        <input type="password" name="thePassword" id="thePassword"> 
+        <input type="password" name="thePassword" id="thePassword">
+        <button id="btn">Submit</button>
       </form>
-        
-      <button id="btn">Submit</button>
 
-      <div id="LoginAuth"></div>  
-
+      <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
       <script>
-
-        //var AuthCheckMess = document.getElementById("LoginAuth");
-        var btn = document.getElementById("btn");
-        btn.addEventListener("click",function()){
-          //Get file
-          var ourRequest = new XMLHttpRequest();
-          ourRequest.open('GET','users.json')
-          xhttp.onload = function() {
-              var ourData = JSON.parse(xhttp.responseText);
-              renderHTML.(ourData);
-          };
-          ourRequest.send();
-
-        });
-
-        function CheckAuth(data){
-          var AuthCheck = "Invalid User Name";
-          var usrnm = document.getElementById("theUsername").value;
-          var psswrd = document.getElementById("thePassword").value;
-    
-          //Parse through every user
-          for(var i = 0; i < data.length ; i++){
-            
-            if(data[i].user_name == usrnm){
-              if(data[i].password == psswrd){
-                AuthCheck = "Valid Username and Password";
-              } else {
-                AuthCheck = "In Correct Password";
+      $('document').ready(function()
+      {
+        $('#Submit').click(function(event)
+        {
+          event.preventDefault();
+          $.ajax(
+            {
+              url : $('#form').attr('action'),
+              type: "POST",
+              data : new FormData($('#form')[0]),
+              processData: false,
+              contentType: false,
+              beforeSend: function(){
+                  //add extra data
+              },
+              success:function(msg)
+              {
+                //document.getElementById("log").innerHTML = msg;
+                        
+                var response = JSON.parse(msg);
+                      
+                if(response.succeeded == false)
+                {
+                  alert(response.message);
+                }
+                else
+                {
+                  if(response.userFlag == "admin"){
+                    window.location.replace("submissionManagement.html");
+                  }
+                  else if(response.userFlag == " user"){
+                    window.location.replace("slideSubmission.html");
+                  } 
+                }
+              },
+              failure:function(msg)
+              {
+                alert(msg);
               }
-            } else {
-              AuthCheck = "Invalid User Name";
-            }
-          }
-          AuthCheckMess.insertAdjacentHTML('beforeend',AuthCheck);
-        }
-        </script>
+            });
+        })
+    })
+  </script>
 
   <body/>
 </html>
