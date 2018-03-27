@@ -1,29 +1,29 @@
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="ludas.css">
-	</head>
-	
-	<body>
-		<h1>LeTourneau University Display Automation System</h1>
+  <head>
+    <link rel="stylesheet" type="text/css" href="ludas.css">
+  </head>
+  
+  <body>
+    <h1>LeTourneau University Display Automation System</h1>
       <p>Sign in with your organization account</p>
-		
+    
       <form>
-  		  User ID: <br>
-  		  <input type="text" name="theUsername">
-  		  <br>
-  		  Password: <br>
-  		  <input type="password" name="thePassword"> 
+        User ID: <br>
+        <input type="text" name="theUsername" id="theUsername">
+        <br>
+        Password: <br>
+        <input type="password" name="thePassword" id="thePassword"> 
       </form>
         
       <button id="btn">Submit</button>
 
-      <div id="LoginAuth"></div>
-        
+      <div id="LoginAuth"></div>  
+
       <script>
 
-        var AuthCheckMess = document.getElementById("LoginAuth");
+        //var AuthCheckMess = document.getElementById("LoginAuth");
         var btn = document.getElementById("btn");
-        btn.addEventListener("click",function(){
+        btn.addEventListener("click",function()){
           //Get file
           var ourRequest = new XMLHttpRequest();
           ourRequest.open('GET','users.json')
@@ -37,11 +37,14 @@
 
         function CheckAuth(data){
           var AuthCheck = "Invalid User Name";
+          var usrnm = document.getElementById("theUsername").value;
+          var psswrd = document.getElementById("thePassword").value;
+    
           //Parse through every user
           for(var i = 0; i < data.length ; i++){
             
             if(data[i].user_name == usrnm){
-              if(data[i].password == pswd){
+              if(data[i].password == psswrd){
                 AuthCheck = "Valid Username and Password";
               } else {
                 AuthCheck = "In Correct Password";
@@ -54,6 +57,5 @@
         }
         </script>
 
-	<body/>
+  <body/>
 </html>
-
