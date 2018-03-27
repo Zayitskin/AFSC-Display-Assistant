@@ -1,4 +1,11 @@
-<p>Sign in with your organization account</p>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="ludas.css">
+  </head>
+  
+  <body>
+    <h1>LeTourneau University Display Automation System</h1>
+      <p>Sign in with your organization account</p>
     
       <form id="form" action="login.php" method="post" enctype="multipart/form-data">
         User ID: <br>
@@ -8,7 +15,8 @@
         <input type="password" name="thePassword" id="thePassword">
         <button id="btn">Submit</button>
       </form>
-
+      
+      <script src="sha256.js"></script>
       <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
       <script>
       $('document').ready(function()
@@ -24,7 +32,8 @@
               processData: false,
               contentType: false,
               beforeSend: function(){
-                  //add extra data
+                  FormData.delete('thePassword');
+                  FormData.append('encPassword',sha256(document.getElementById('thePassword').value));
               },
               success:function(msg)
               {
