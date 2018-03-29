@@ -12,20 +12,15 @@
 			<tr>
 				<th>File</th>
 				<th>Start Day</th>
-				<th>Start Time</th>
 				<th>End Date</th>
-				<th>End Time</th>
 				<th>Comments - Optional</th>
 			</tr>
 			<tr>
 			    <td>
-			        <!-- fileToUpload is used to get the file from $_FILES[]. -->
 			        <input type="file" name="fileToUpload" id="fileToUpload" accept=".ppt, .pptx" required/>
 			    </td>
 				<td><input id="startDate" name="startDate" type="date" required></td>
-				<td><input id="startTime" name="startTime" type="time" required></td>
 				<td><input id="endDate" name="endDate" type="date" required></td>
-				<td><input id="endTime" name="endTime" type="time" required></td>
 				<td>
 				    <textarea id="comments" name="comments" rows="10" cols="50"></textarea>
 				</td>
@@ -42,9 +37,15 @@
             $('#submitButton').click(function(event)
             {
                 event.preventDefault();
+                
+                var file = $("#fileToUpload").get(0).files;
+                var startDate = $("#startDate").val();
+                var endDate = $("#endDate").val();
             
-                $.ajax(
+                if(!(file.length == 0 || startDate.length == 0 || endDate.length == 0))
                 {
+                    $.ajax(
+                    {
                     url : $('#form').attr('action'),
                     type: "POST",
                     data : new FormData($('#form')[0]),
@@ -52,8 +53,6 @@
                     contentType: false,
                     success:function(msg)
                     {
-                        //document.getElementById("log").innerHTML = msg;
-                        
                         var response = JSON.parse(msg);
                         
                         if(response.succeeded == false)
@@ -62,18 +61,21 @@
                         }
                         else
                         {
-                            //alert(response.message);
-                            
                             window.location.replace("confirmation.html");
                         }
-                    },
-                    failure:function(msg)
-                    {
-                        alert(msg);
-                    }
-                });
+                        },
+                        failure:function(msg)
+                        {
+                            alert(msg);
+                        }
+                    });
+                }
+                else
+                {
+                    alert("Must fill out all fields!");
+                }
             })
-    })
+        })
 	</script>
 	</body>
 </html>

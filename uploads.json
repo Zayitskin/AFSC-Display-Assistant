@@ -1,27 +1,23 @@
 {
-"uploads" : [
-    {
-		"user": "obama",
-		"slides": [
-			{
-				"path": "q5ek19m79o8h6s2d.pptx",
-				"startDate": "",
-				"startTime": "00:51",
-				"endDate": "0236-12-05",
-				"endTime": "00:51",
-				"value": "Undecided",
-				"comments": "ASFASFAS"
-			},
-			{
-				"path": "2i22i4xdxprsw47o.pptx",
-				"startDate": "0041-12-12",
-				"startTime": "00:51",
-				"endDate": "0236-12-05",
-				"endTime": "00:51",
-				"value": "Approve",
-				"comments": "ASFASFAS"
-			}
-		]
-	}
-]
+    "uploads": [
+        {
+            "user": "obama",
+            "slides": [
+                {
+                    "path": "1a9m7bx0fqznb4r2.pptx",
+                    "startDate": "0099-06-08",
+                    "endDate": "9569-05-06",
+                    "value": "Undecided",
+                    "comments": "569569sfgasdg"
+                },
+                {
+                    "path": "x0kw69l0bkbk2vqf.pptx",
+                    "startDate": "0125-12-05",
+                    "endDate": "0125-12-05",
+                    "value": "Undecided",
+                    "comments": ""
+                }
+            ]
+        }
+    ]
 }

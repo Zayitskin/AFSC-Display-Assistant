@@ -1,4 +1,6 @@
 <html>
+  <meta charset="utf-8">
+
   <head>
     <link rel="stylesheet" type="text/css" href="ludas.css">
   </head>
@@ -13,7 +15,7 @@
         <br>
         Password: <br>
         <input type="password" name="thePassword" id="thePassword"> <br>
-        <button id="btn">Submit</button>
+        <button id="btn" name="btn">Submit</button>
       </form>
       
       <script src="sha256.js"></script>
@@ -21,10 +23,16 @@
       <script>
       $('document').ready(function()
       {
-        $('#Submit').click(function(event)
+        $('#btn').click(function(event)
         {
           event.preventDefault();
-          $.ajax(
+          
+          var username = $("#theUsername");
+          var password = $("#thePassword");
+          
+          if(!(username.val().length == 0 || password.val().length == 0))
+          {
+            $.ajax(
             {
               url : $('#form').attr('action'),
               type: "POST",
@@ -32,13 +40,11 @@
               processData: false,
               contentType: false,
               beforeSend: function(){
-                  FormData.delete('thePassword');
-                  FormData.append('encPassword',sha256(document.getElementById('thePassword').value));
+                  this.data.delete('thePassword');
+                  this.data.append('encPassword',sha256(document.getElementById('thePassword').value));
               },
               success:function(msg)
-              {
-                //document.getElementById("log").innerHTML = msg;
-                        
+              {      
                 var response = JSON.parse(msg);
                       
                 if(response.succeeded == false)
@@ -60,6 +66,11 @@
                 alert(msg);
               }
             });
+          }
+          else
+          {
+            alert("Must fill out all fields!");
+          }
         })
     })
   </script>

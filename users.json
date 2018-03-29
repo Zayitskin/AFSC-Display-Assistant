@@ -1,19 +1,23 @@
-[{
-	"user_name":"EllenBlais",
-	"password":"StudentEB",
-}, {
-	"user_name":"JonathanSchemenaur",
-	"password":"StudentJS",
-}, {
-	"user_name": "ZacharyItskin",
-	"password": "StudentZI",
-}, {
-	"user_name": "JohnSmith",
-	"password": "StudentJS",
-}, {
-	"user_name": "PaulRoberts",
-	"password": "StudentPR",
-}, {
-	"user_name": "SusanMorgan",
-	"password": "StudentSM",
-}]
+{
+    "users":
+    [
+        {
+            "user_name": "EllenBlais",
+	        "encPassword": "d63598cfb943d9217225c5a47beb350155707395f4ff9114606c0d437b67f7bb",
+	        "user_flag": "admin",
+	        "_comment": "password: tacoCat"
+        },
+        {
+            "user_name": "JohnathanSchemenaur",
+	        "encPassword": "1d952da9c61b5a9fb2373aeaaebde733baf6d27517b832279ad381739dfdf327",
+	        "user_flag": "user",
+	        "_comment": "password: gatoCarne"
+        },
+        {
+            "user_name": "ZacharyItskin",
+	        "encPassword": "42a38b53e86c648af5b5afee1b66bf93234c04b6704ec9b5a49fc0cc30d6b6ca",
+	        "user_flag": "banned",
+	        "_comment": "password: nyanCat"
+        }
+    ]   
+}

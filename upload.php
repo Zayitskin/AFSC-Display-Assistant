@@ -24,9 +24,7 @@ $target_file = $target_dir . $newName . "." . $fileType;
 /*
  * Make sure required data is set
  */
- if (empty($_POST["startTime"])
- || empty($_POST["endDate"]) || empty($_POST["endTime"]) 
- || empty($_FILES["fileToUpload"]))
+ if (empty($_POST["startDate"])|| empty($_POST["endDate"]) || empty($_FILES["fileToUpload"]))
 {
     sendMessage(false, "Error: Not all required fields were set!");
 }
@@ -131,9 +129,7 @@ function updateJSON($username, $fileName)
             
             $newDataArray["slides"][0]["path"] = $fileName;
             $newDataArray["slides"][0]["startDate"] = $_POST["startDate"];
-            $newDataArray["slides"][0]["startTime"] = $_POST["startTime"];
             $newDataArray["slides"][0]["endDate"] = $_POST["endDate"];
-            $newDataArray["slides"][0]["endTime"] = $_POST["endTime"];
             $newDataArray["slides"][0]["value"] = "Undecided";
             $newDataArray["slides"][0]["comments"] =  $_POST["comments"];
             
@@ -143,9 +139,7 @@ function updateJSON($username, $fileName)
         {
             $newDataArray["path"] = $fileName;
             $newDataArray["startDate"] = $_POST["startDate"];
-            $newDataArray["startTime"] = $_POST["startTime"];
             $newDataArray["endDate"] = $_POST["endDate"];
-            $newDataArray["endTime"] = $_POST["endTime"];
             $newDataArray["value"] = "Undecided";
             $newDataArray["comments"] =  $_POST["comments"];
         
