@@ -51,13 +51,22 @@
                     data : new FormData($('#form')[0]),
                     processData: false,
                     contentType: false,
+                    beforeSend: function()
+                    {
+                        this.data.append('action', 'uploadSlide');
+                    },
                     success:function(msg)
                     {
                         var response = JSON.parse(msg);
                         
                         if(response.succeeded == false)
                         {
-                            alert(response.message);
+                            alert(response.errorMessage);
+                            
+                            if(response.hasSessionError == true)
+                            {
+                                window.location.replace("login.html");
+                            }
                         }
                         else
                         {

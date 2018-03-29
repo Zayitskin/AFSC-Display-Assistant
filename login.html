@@ -39,7 +39,10 @@
               data : new FormData($('#form')[0]),
               processData: false,
               contentType: false,
-              beforeSend: function(){
+              beforeSend: function()
+              {
+                  this.data.append('action', 'login');
+              
                   this.data.delete('thePassword');
                   this.data.append('encPassword',sha256(document.getElementById('thePassword').value));
               },
@@ -49,14 +52,14 @@
                       
                 if(response.succeeded == false)
                 {
-                  alert(response.message);
+                  alert(response.errorMessage);
                 }
                 else
                 {
-                  if(response.userFlag == "admin"){
+                  if(response.dataArray.userFlag == "admin"){
                     window.location.replace("submissionManagement.html");
                   }
-                  else if(response.userFlag == "user"){
+                  else if(response.dataArray.userFlag == "user"){
                     window.location.replace("slideSubmission.html");
                   } 
                 }

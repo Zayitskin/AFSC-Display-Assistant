@@ -1,41 +1,54 @@
 <?php
 
-/*
- * userFlag
- * - "admin" or "user"
- *
- * encPassword
- */
+ include "utilities.php";
  
- if(empty($_POST["theUsername"]) || empty($_POST["encPassword"]))
+ session_start();
+
+ if($_POST["action"] == "login")
  {
-    sendMessage(false, "Error: Required fields empty!", "none");
+    loginUser();
  }
  
- $username = $_POST["theUsername"];
- $encPassword = $_POST["encPassword"];
+ //End of script entry
  
- if(!is_readable("users.json"))
+ 
+ function loginUser()
  {
-    sendMessage(false, "Error: Users files cannot be read!", "none");
- }
- 
- $userFlag = checkJSON($username, $encPassword);
- 
- if(isset($userFlag))
- {
-    if($userFlag === "banned")
+    if(empty($_POST["theUsername"]) || empty($_POST["encPassword"]))
     {
-        sendMessage(false, "Error: User is banned!", "none");
+        sendMessage(false, false, "Required fields empty!", null);
+    }
+ 
+    $username = $_POST["theUsername"];
+    $encPassword = $_POST["encPassword"];
+ 
+    if(!is_readable("users.json"))
+    {
+        sendMessage(false, false, "Users files cannot be read!", null);
+    }
+ 
+    $userFlag = checkJSON($username, $encPassword);
+ 
+    if(isset($userFlag))
+    {
+        if($userFlag === "banned")
+        {
+            sendMessage(false, false, "User is banned!", null);
+        }
+        else
+        {
+            $_SESSION["username"] = $username;
+            $_SESSION["userFlag"] = $userFlag;
+        
+            $dataArray = null;
+            $dataArray["userFlag"] = $userFlag;
+            sendMessage(true, false, null, $dataArray);
+        }
     }
     else
     {
-        sendMessage(true, "none", $userFlag);
+        sendMessage(false, false, "Incorrect username or password!", null);
     }
- }
- else
- {
-    sendMessage(false, "Error: Incorrect username or password!", "none");
  }
  
  
@@ -81,20 +94,5 @@ function checkJSON($username, $encPassword)
         return true;
     }
 }
- 
- function sendMessage($succeeded, $message, $userFlag)
- {
-    $messageArray = null;
-    $messageArray["succeeded"] = $succeeded;
-    $messageArray["message"] = $message;
-    $messageArray["userFlag"] = $userFlag;
-    $jsonMessage = json_encode($messageArray, JSON_PRETTY_PRINT);
-    echo $jsonMessage;
-    
-    if($succeeded == false)
-    {
-        die(0);
-    }
- }
  
 ?>
