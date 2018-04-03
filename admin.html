@@ -1,6 +1,38 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
+		
+		<script>
+			var table = document.getElementById("admins");
+			var xmlhttp = new XMLHttpRequest();
+			var TheUsers;
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					TheUsers = JSON.parse(this.responseText);
+				}
+			};
+			
+			xml.onlaod = function() {
+				for(i in TheUsers.users){
+					table.insertRow();
+					var row = table.rows[table.rows.length-1];
+					row.insertCell();
+					var cell = row.cells[0];
+					if(TheUsers.users[i].user_flag == "admin"){
+						cell.innerHTML = TheUsers.users[i].user_name;
+						row.insertCell();
+						cell = row.cells[1];
+						cell.innerHTML = "Administrator";
+						row.insertCell();
+					}
+				}
+			}
+		
+			xmlhttp.open("GET", "users.json", true);
+			xmlhttp.send();
+			
+		</script>
+		
 	</head>
 	<body>
 		<h1>LUDAS Administrators</h1>
@@ -19,34 +51,6 @@
 			function ManagePage()
 			{
 				document.location.href = "userManagement.html";
-			}
-		</script>
-
-		<script>
-			var table = document.getElementById("admins");
-
-			var xmlhttp = new XMLHttpRequest();
-			var TheUsers;
-			xmlhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					TheUsers = JSON.parse(this.responseText);
-				}
-			};
-			xmlhttp.open("GET", "users.json", true);
-			xmlhttp.send();
-
-			for(i in TheUsers.users){
-				table.insertRow();
-				var row = table.rows[table.rows.length-1];
-				row.insertCell();
-				var cell = row.cells[0];
-				if(TheUsers.users[i].user_flag == "admin"){
-					cell.innerHTML = TheUsers.users[i].user_name;
-					row.insertCell();
-					cell = row.cells[1];
-					cell.innerHTML = "Administrator";
-					row.insertCell();
-				}
 			}
 		</script>
 	</body>
