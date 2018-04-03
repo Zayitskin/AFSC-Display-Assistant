@@ -18,13 +18,14 @@
 		<script>
 
           	var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
+		var TheUsers;
+		xmlhttp.onreadystatechange = function() {
     			if (this.readyState == 4 && this.status == 200) {
-	        		var TheUsers = JSON.parse(this.responseText);
+	        		TheUsers = JSON.parse(this.responseText);
     			}
-			};
-			xmlhttp.open("GET", "users.json", true);
-			xmlhttp.send();
+		};
+		xmlhttp.open("GET", "users.json", true);
+		xmlhttp.send();
 				
 			function SearchUsers()
 			{
