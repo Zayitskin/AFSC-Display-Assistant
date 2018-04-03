@@ -1,17 +1,68 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
-		<script>
-			function notHappening()
-			{
-				var p = document.getElementById("text");
-				p.innerHTML = "Yeah, there is no way I am implementing search without a database.";
-			}
-		</script>
 	</head>
 	<body>
-		<input type="text">
-		<button onclick="notHappening()">Search</button>
-		<h id="text"></h>
+		<h1>LUDAS User Management</h1>
+		<input type="text" name="User" id="User">
+		<button onclick="SearchUsers()">Search</button>
+		<br>
+		(Format: FirstnameLastname)
+		<br>
+		<p id="Message"></p> 
+
+		<br>
+		<button onclick="AddUsers()">Add Admin</button>
+		<button onclick="DeleteUsers()">Delete Admin</button>
+
+		<script>
+
+          	var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+    			if (this.readyState == 4 && this.status == 200) {
+	        		var TheUsers = JSON.parse(this.responseText);
+    			}
+			};
+			xmlhttp.open("GET", "users.json", true);
+			xmlhttp.send();
+			
+			
+			function SearchUsers()
+			{
+				var searchedUser = document.getElementById("User").value;
+				var Flag = "0";
+				for(i in TheUsers.users){
+					if(searchedUser == TheUsers.users[i].user_name){
+						document.getElementById("Message").innerHTML = "Add or delete " + TheUsers.users[i].user_name + " from the administrator list ";
+						Flag = "1";
+					}
+					if(Flag == "0"){
+						document.getElementById("Message").innerHTML = "User, " + searchedUser + ", not found";
+					}	
+				}
+	        }
+			function AddUsers()
+			{
+				var searchedUser = document.getElementById("User").value;
+				for(i in TheUsers.users){
+					if(searchedUser == TheUsers.users[i].user_name){
+						TheUsers.users[i].user_flag = "admin";
+						//document.getElementById("Message").innerHTML = TheUsers.users[i].user_flag;
+					}	
+				}
+			}
+			function DeleteUsers()
+			{
+				var searchedUser = document.getElementById("User").value;
+				for(i in TheUsers.users){
+					if(searchedUser == TheUsers.users[i].user_name){
+						TheUsers.users[i].user_flag = "user";
+						//document.getElementById("Message").innerHTML = TheUsers.users[i].user_flag;
+					}	
+				}
+			}
+
+		</script>
+
 	</body>
 </html>
