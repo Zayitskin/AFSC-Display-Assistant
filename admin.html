@@ -28,9 +28,10 @@
 			var table = document.getElementById("admins");
 
           	var xmlhttp = new XMLHttpRequest();
+		var TheUsers;
 			xmlhttp.onreadystatechange = function() {
     			if (this.readyState == 4 && this.status == 200) {
-	        		var TheUsers = JSON.parse(this.responseText);
+	        		TheUsers = JSON.parse(this.responseText);
     			}
 			};
 			xmlhttp.open("GET", "users.json", true);
