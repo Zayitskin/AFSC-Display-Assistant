@@ -59,49 +59,144 @@ function uploadSlide()
     /*
      * Make sure file is powerpoint
      */
-    if($fileType != "ppt" && $fileType != "pptx")
+    if($fileType != "pptx")
     {
-        sendMessage(false, false, "Must upload PPTX or PPT file!", null);
+        sendMessage(false, false, "Must upload PPTX file!", null);
     }
-
-    
 
     /*
      * Check if slides directory and slides.json are writable.
      */
-     if(!is_writable($target_dir) || !is_writable("uploads.json"))
+     if(!is_writable($target_dir) || !is_writable("uploads.json") || !is_writable("temporary"))
      {
         sendMessage(false, false, "Files cannot be written to!", null);
+     }
+     
+    /*
+     * Check powerpoint aspect ratio is 16:9 and it only contains one slide.
+     */
+     $index = 0;
+     $tempFilePath = null;
+     $tempPPTXPath = null;
+     
+     for(;$index < 100; $index++)
+     {
+        $tempFilePath = "temporary/" . "temp" . $index . "/";
+        $tempPPTXPath = $tempFilePath . $newName . "." . $fileType;
+     
+        if(!file_exists($tempFilePath))
+        {
+            if(mkdir($tempFilePath))
+            {
+                if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $tempPPTXPath))
+                {
+                    $zip = new ZipArchive;
+                    $opened = $zip->open($tempPPTXPath);
+    
+                    if ($opened === TRUE)
+                    {
+                        $zip->extractTo($tempFilePath);
+                        
+                        $fileIterator = new FilesystemIterator($tempFilePath . "ppt/slides/_rels", FilesystemIterator::SKIP_DOTS);
+                        $fileCount = iterator_count($fileIterator);
+                        
+                        if($fileCount > 1)
+                        {
+                            attemptRemoveTemporary($index);
+                            sendMessage(false, false, "Powerpoint file contains more than one slide. File must contain only one slide!", null);
+                        }
+                        
+                        
+                        $xmlFile = fopen($tempFilePath . "/ppt/presentation.xml", "r");
+                        
+                        if($xmlFile === false)
+                        {
+                            attemptRemoveTemporary($index);
+                            sendMessage(false, false, "Could not read xml file!", null);
+                        }
+                        
+                        $fileContents = fread($xmlFile,filesize($tempFilePath . "/ppt/presentation.xml"));
+                        
+                        if(!preg_match("/screen16x9/", $fileContents))
+                        {
+                            attemptRemoveTemporary($index);
+                            sendMessage(false, false, "Powerpoint file is not 16x9 aspect ratio!", null);
+                        }
+                        
+                        fclose($xmlFile);
+                    }
+                    else
+                    {
+                        attemptRemoveTemporary($index);
+                        sendMessage(false, false, "Could not unzip the pptx file!", null);
+                    }
+                }
+                else
+                {
+                    attemptRemoveTemporary($index);
+                    sendMessage(false, false, "There was an error moving the powerpoint file to new temporary directory!", null); 
+                }
+
+                break;
+            }
+            else
+            {
+                sendMessage(false, false, "Could not create a new temporary directory!", null);
+            }
+        }
+     }
+     
+     if($index === 99)
+     {
+        sendMessage(false, false, "Could not create a new temporary directory! Index reached limit!", null);
      }
  
     /*
      * !!!!!!!!!!!
-     * Username is hardcoded for now.
-     * This needs to be replaces with getting the actual user that uploaded the file.
-     *
-     * !!!!!!!!!!!
-     * Uploading the file should not thrown an error.
-     * If it does, the JSON file is now corrupted because it contains a slide that was not able to be saved properly.
-     * This error should be dealt with later.
+     * Updating the JSON file should not thrown an error
+     * If it does, the slides directory now contains a powerpoint with no data in the uploads JSON file.
      */
-    if (updateJSON($_SESSION["username"], $newName . "." . $fileType))
+    if(copy($tempPPTXPath, $target_file))
     {
-        if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file))
+        attemptRemoveTemporary($index);
+        
+        if(updateJSON($_SESSION["username"], $newName . "." . $fileType))
         {
             sendMessage(true, false, null, null);
         }
         else
         {
-            sendMessage(false, false, "Fatal - There was an error uploading your file! uploads.json is now potentially corrupted!", null);
-        }   
+            sendMessage(false, false, "Fatal - There was an error saving the uploads JSON file! The slides directory now contains a dead powerpoint file!", null);
+        } 
     }
     else
     {
-        sendMessage(false, false, "There was an error saving the slides JSON file!", null);
+        attemptRemoveTemporary($index);
+        sendMessage(false, false, "There was an error moving the powerpoint file to slides directory!", null); 
     }
 }
 
+function attemptRemoveTemporary($tempIndex)
+{
+    $tempFilePath = "temporary/" . "temp" . $tempIndex;
+    
+    if(!delTree($tempFilePath))
+    {
+        sendMessage(false, false, "Fatal - There was an error deleting the temporary diectory! The temporary directory now contains a dead temp folder!", null);
+    }
+}
 
+function delTree($dir)
+{
+   $files = array_diff(scandir($dir), array('.','..'));
+   
+    foreach ($files as $file)
+    {
+      (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+    }
+    
+    return rmdir($dir);
+  }
 
 /*
  * Returns true if slides JSON file was succesfully updated.
