@@ -12,8 +12,9 @@
 		<p id="Message"></p> 
 
 		<br>
-		<button onclick="AddUsers()">Add Admin</button>
+		<button onclick="AddUsers()">Make Admin</button>
 		<button onclick="BanUsers()">Ban User</button>
+		<button onclick="MakeUsers()">Make User</button>
 
 		<script>
 
@@ -33,7 +34,7 @@
 				var Flag = "0";
 				for(i in TheUsers.users){
 					if(searchedUser == TheUsers.users[i].user_name){
-						document.getElementById("Message").innerHTML = "Add " + TheUsers.users[i].user_name + " to the administrator list or ban user";
+						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + ": " + TheUsers.users[i].user_flag;
 						Flag = "1";
 					}
 					if(Flag == "0"){
@@ -61,6 +62,17 @@
 					}	
 				}
 			}
+			function MakeUsers()
+			{
+				var searchedUser = document.getElementById("User").value;
+				for(i in TheUsers.users){
+					if(searchedUser == TheUsers.users[i].user_name){
+						TheUsers.users[i].user_flag = "users";
+						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + " is a " +TheUsers.users[i].user_flag +" user";
+					}	
+				}
+			}
+			
 		</script>
 	</body>
 </html>
