@@ -187,7 +187,7 @@ function attemptRemoveTemporary($tempIndex)
     
     if(!delTree($tempFilePath))
     {
-        sendMessage(false, false, "Fatal - There was an error deleting the temporary diectory! The temporary directory now contains a dead temp folder!", null);
+        //sendMessage(false, false, "Fatal - There was an error deleting the temporary diectory! The temporary directory now contains a dead temp folder!", null);
     }
 }
 
@@ -197,10 +197,21 @@ function delTree($dir)
    
     foreach ($files as $file)
     {
-      (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+	  
+	  if(is_dir("$dir/$file"))
+	  {
+		  delTree("$dir/$file");
+	  }
+	  else
+	  {
+		  if(!@unlink("$dir/$file"))
+		  {
+			  //sendMessage(false, false, "Fatal - Error deleting temp files!", null);
+		  }
+	  }
     }
     
-    return rmdir($dir);
+    return @rmdir($dir);
   }
 
 /*
