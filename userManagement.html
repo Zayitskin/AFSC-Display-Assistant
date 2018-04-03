@@ -13,7 +13,7 @@
 
 		<br>
 		<button onclick="AddUsers()">Add Admin</button>
-		<button onclick="DeleteUsers()">Delete Admin</button>
+		<button onclick="BanUsers()">Ban User</button>
 
 		<script>
 
@@ -51,12 +51,12 @@
 					}	
 				}
 			}
-			function DeleteUsers()
+			function BanUsers()
 			{
 				var searchedUser = document.getElementById("User").value;
 				for(i in TheUsers.users){
 					if(searchedUser == TheUsers.users[i].user_name){
-						TheUsers.users[i].user_flag = "user";
+						TheUsers.users[i].user_flag = "banned";
 						//document.getElementById("Message").innerHTML = TheUsers.users[i].user_flag;
 					}	
 				}
