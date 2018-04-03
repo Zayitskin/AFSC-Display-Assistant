@@ -46,7 +46,7 @@
 				for(i in TheUsers.users){
 					if(searchedUser == TheUsers.users[i].user_name){
 						TheUsers.users[i].user_flag = "admin";
-						//document.getElementById("Message").innerHTML = TheUsers.users[i].user_flag;
+						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + " is a " +TheUsers.users[i].user_flag;
 					}	
 				}
 			}
@@ -56,7 +56,7 @@
 				for(i in TheUsers.users){
 					if(searchedUser == TheUsers.users[i].user_name){
 						TheUsers.users[i].user_flag = "banned";
-						//document.getElementById("Message").innerHTML = TheUsers.users[i].user_flag;
+						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + " is a " +TheUsers.users[i].user_flag +" user";
 					}	
 				}
 			}
