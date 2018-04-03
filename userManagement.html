@@ -32,11 +32,11 @@
 				var Flag = "0";
 				for(i in TheUsers.users){
 					if(searchedUser == TheUsers.users[i].user_name){
-						document.getElementById("Message").innerHTML = "Add or delete " + TheUsers.users[i].user_name + " from the administrator list ";
+						document.getElementById("Message").innerHTML = "Add " + TheUsers.users[i].user_name + " to administrator list or ban user";
 						Flag = "1";
 					}
 					if(Flag == "0"){
-						document.getElementById("Message").innerHTML = "User, " + searchedUser + ", not found";
+						document.getElementById("Message").innerHTML = "Search again, " + searchedUser + " not found";
 					}	
 				}
 	        	}
@@ -60,8 +60,6 @@
 					}	
 				}
 			}
-
 		</script>
-
 	</body>
 </html>
