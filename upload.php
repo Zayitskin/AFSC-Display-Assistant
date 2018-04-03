@@ -166,7 +166,12 @@ function uploadSlide()
         }
         else
         {
-            sendMessage(false, false, "Fatal - There was an error saving the uploads JSON file! The slides directory now contains a dead powerpoint file!", null);
+            if(!unlink($target_file))
+            {
+                sendMessage(false, false, "Fatal - There was an error saving the uploads JSON file and deleting the new pptx file! The slides directory now contains a dead powerpoint!", null);
+            }
+        
+            sendMessage(false, false, "There was an error saving the uploads JSON file!", null);
         } 
     }
     else
