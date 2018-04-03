@@ -6,10 +6,9 @@
 		<h1>LUDAS Administrators</h1>
 
 		<table id="admins">
-			<tr>
-				<th>Name</th>
-				<th>Privileges</th>
-				<th></th>
+		<tr>
+			<th>Name</th>
+			<th>Privileges</th>
       		</tr>
 		</table>
 
@@ -24,21 +23,20 @@
 		</script>
 
 		<script>
-			
 			var table = document.getElementById("admins");
 
-          	var xmlhttp = new XMLHttpRequest();
-		var TheUsers;
+			var xmlhttp = new XMLHttpRequest();
+			var TheUsers;
 			xmlhttp.onreadystatechange = function() {
-    			if (this.readyState == 4 && this.status == 200) {
-	        		TheUsers = JSON.parse(this.responseText);
-    			}
+				if (this.readyState == 4 && this.status == 200) {
+					TheUsers = JSON.parse(this.responseText);
+				}
 			};
 			xmlhttp.open("GET", "users.json", true);
 			xmlhttp.send();
 
-          	for(i in TheUsers.users){
-	            table.insertRow();
+			for(i in TheUsers.users){
+				table.insertRow();
 				var row = table.rows[table.rows.length-1];
 				row.insertCell();
 				var cell = row.cells[0];
@@ -49,7 +47,7 @@
 					cell.innerHTML = "Administrator";
 					row.insertCell();
 				}
-	        }
+			}
 		</script>
 	</body>
 </html>
