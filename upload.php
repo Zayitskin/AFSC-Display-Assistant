@@ -99,6 +99,7 @@ function uploadSlide()
                     if ($opened === TRUE)
                     {
                         $zip->extractTo($tempFilePath);
+                        $zip->close();
                         
                         $fileIterator = new FilesystemIterator($tempFilePath . "ppt/slides/_rels", FilesystemIterator::SKIP_DOTS);
                         $fileCount = iterator_count($fileIterator);
@@ -148,6 +149,7 @@ function uploadSlide()
                     }
                     else
                     {
+                        $zip->close();
                         removeTemporary($index);
                         sendMessage(false, false, "Could not unzip the pptx file!", null);
                     }
