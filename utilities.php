@@ -1,5 +1,26 @@
 <?php
 
+function deleteTree($dir)
+{
+   $files = array_diff(scandir($dir), array('.','..'));
+   
+    foreach ($files as $file)
+    {
+	  if(is_dir("$dir/$file"))
+	  {
+		  deleteTree("$dir/$file");
+	  }
+	  else
+	  {
+		  if(!@unlink("$dir/$file"))
+		  {
+			  return false;
+		  }
+	  }
+    }
+    
+    return @rmdir($dir);
+  }
 
 function sendMessage($succeeded, $hasSessionError, $errorMessage, $dataArray)
  {

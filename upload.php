@@ -66,7 +66,10 @@ function uploadSlide()
 
     /*
      * Check if slides directory and slides.json are writable.
+     * 
+     * This does not actually work on windows...
      */
+     
      if(!is_writable($target_dir) || !is_writable("uploads.json") || !is_writable("temporary"))
      {
         sendMessage(false, false, "Files cannot be written to!", null);
@@ -102,7 +105,7 @@ function uploadSlide()
                         
                         if($fileCount > 1)
                         {
-                            attemptRemoveTemporary($index);
+                            removeTemporary($index);
                             sendMessage(false, false, "Powerpoint file contains more than one slide. File must contain only one slide!", null);
                         }
                         
@@ -111,29 +114,47 @@ function uploadSlide()
                         
                         if($xmlFile === false)
                         {
-                            attemptRemoveTemporary($index);
+                            removeTemporary($index);
                             sendMessage(false, false, "Could not read xml file!", null);
                         }
                         
                         $fileContents = fread($xmlFile,filesize($tempFilePath . "/ppt/presentation.xml"));
-                        
+                    
                         if(!preg_match("/screen16x9/", $fileContents))
                         {
-                            attemptRemoveTemporary($index);
-                            sendMessage(false, false, "Powerpoint file is not 16x9 aspect ratio!", null);
+                            /*
+                             *   Hot diggidy doodle that regex tho...
+                             *   Not all powerpoints files have the 16x9 listed in the xml file.
+                             *   As such, we have to get the slide size and calculate the aspect ratio...
+                             */
+                            if(preg_match("/sldSz\s*cx\s*=\s*\"\s*[0-9]*\s*\"\s*cy\s*=\s*\"\s*[0-9]*\s*\"/", $fileContents, $caughtStrings))
+                            {
+                                preg_match_all("/[0-9]+/", $caughtStrings[0], $dimensions);
+                                
+                                if(!(floatval($dimensions[0][0]) / floatval($dimensions[0][1]) == 16 / 9))
+                                {
+                                    removeTemporary($index);
+                                    sendMessage(false, false, "Powerpoint file is not 16x9 aspect ratio!", null);
+                                }
+                            }
+                            else
+                            {
+                                removeTemporary($index);
+                                sendMessage(false, false, "Powerpoint file xml dimension could not be parsed!", null);
+                            }
                         }
                         
                         fclose($xmlFile);
                     }
                     else
                     {
-                        attemptRemoveTemporary($index);
+                        removeTemporary($index);
                         sendMessage(false, false, "Could not unzip the pptx file!", null);
                     }
                 }
                 else
                 {
-                    attemptRemoveTemporary($index);
+                    removeTemporary($index);
                     sendMessage(false, false, "There was an error moving the powerpoint file to new temporary directory!", null); 
                 }
 
@@ -146,7 +167,7 @@ function uploadSlide()
         }
      }
      
-     if($index === 99)
+     if($index === 100)
      {
         sendMessage(false, false, "Could not create a new temporary directory! Index reached limit!", null);
      }
@@ -158,7 +179,7 @@ function uploadSlide()
      */
     if(copy($tempPPTXPath, $target_file))
     {
-        attemptRemoveTemporary($index);
+        removeTemporary($index);
         
         if(updateJSON($_SESSION["username"], $newName . "." . $fileType))
         {
@@ -176,43 +197,23 @@ function uploadSlide()
     }
     else
     {
-        attemptRemoveTemporary($index);
+        removeTemporary($index);
         sendMessage(false, false, "There was an error moving the powerpoint file to slides directory!", null); 
     }
 }
 
-function attemptRemoveTemporary($tempIndex)
+/*
+ * Remove the temporary files created for pptx file checks.
+ */
+function removeTemporary($tempIndex)
 {
     $tempFilePath = "temporary/" . "temp" . $tempIndex;
     
-    if(!delTree($tempFilePath))
+    if(!deleteTree($tempFilePath))
     {
-        //sendMessage(false, false, "Fatal - There was an error deleting the temporary diectory! The temporary directory now contains a dead temp folder!", null);
+        sendMessage(false, false, "Fatal - There was an error deleting the temporary directory! The temporary directory now contains a dead temp folder!", null);
     }
 }
-
-function delTree($dir)
-{
-   $files = array_diff(scandir($dir), array('.','..'));
-   
-    foreach ($files as $file)
-    {
-	  
-	  if(is_dir("$dir/$file"))
-	  {
-		  delTree("$dir/$file");
-	  }
-	  else
-	  {
-		  if(!@unlink("$dir/$file"))
-		  {
-			  //sendMessage(false, false, "Fatal - Error deleting temp files!", null);
-		  }
-	  }
-    }
-    
-    return @rmdir($dir);
-  }
 
 /*
  * Returns true if slides JSON file was succesfully updated.
