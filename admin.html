@@ -1,9 +1,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
-		
 		<script>
-			var table = document.getElementById("admins");
 			var xmlhttp = new XMLHttpRequest();
 			var TheUsers;
 			xmlhttp.onreadystatechange = function() {
@@ -11,6 +9,8 @@
 					TheUsers = JSON.parse(this.responseText);
 				}
 			};
+			
+			var table = document.getElementById("adminsTable");
 			
 			xmlhttp.onload = function() {
 				for(i in TheUsers.users){
@@ -27,23 +27,21 @@
 					}
 				}
 			}
-		
-			xmlhttp.open("GET", "users.json", true);
-			xmlhttp.send();
 			
-		</script>
-		
+			xmlhttp.open("GET", "users.json", true);
+			xmlhttp.send();	
+		</script>	
 	</head>
 	<body>
 		<h1>LUDAS Administrators</h1>
 
-		<table id="admins">
-		<tr>
-			<th>Name</th>
-			<th>Privileges</th>
-      		</tr>
+		<table id="adminsTable">
+			<tr>
+				<th>Name</th>
+				<th>Privileges</th>
+      			</tr>
 		</table>
-
+		
 		<br>
 		<button onclick="ManagePage()">Manage Administrators</button>
 
