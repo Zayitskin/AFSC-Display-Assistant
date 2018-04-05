@@ -50,6 +50,8 @@ function uploadSlide()
 
     /*
      * Make sure file isn't larger than 100 megabytes, this is an arbitrary max value
+	 * upload_max_filesize and post_max_size need to be changed as well in php.ini
+	 * Use phpinfo.php page to find out where your php.ini file is located
      */
     if ($_FILES["fileToUpload"]["size"] > 838860800 )
     {
@@ -67,7 +69,7 @@ function uploadSlide()
     /*
      * Check if slides directory and slides.json are writable.
      * 
-     * This does not actually work on windows...
+     * This might not actually work on windows...
      */
      
      if(!is_writable($target_dir) || !is_writable("uploads.json") || !is_writable("temporary"))
@@ -109,7 +111,12 @@ function uploadSlide()
                             removeTemporary($index);
                             sendMessage(false, false, "Powerpoint file contains more than one slide. File must contain only one slide!", null);
                         }
-                        
+						
+                        /*
+                         *  MAKE SURE TO UNSET THE STUPID THINGS EVEN THO NO ONE TELLS YOU TO DO THAT BECAUSE IT WILL BLOCK THE TEMP FILES FROM BEING DELETED YES I AM MAD
+                         */
+						unset($fileIterator);
+						unset($fileCount);
                         
                         $xmlFile = fopen($tempFilePath . "/ppt/presentation.xml", "r");
                         
@@ -120,6 +127,7 @@ function uploadSlide()
                         }
                         
                         $fileContents = fread($xmlFile,filesize($tempFilePath . "/ppt/presentation.xml"));
+						fclose($xmlFile);
                     
                         if(!preg_match("/screen16x9/", $fileContents))
                         {
@@ -144,8 +152,6 @@ function uploadSlide()
                                 sendMessage(false, false, "Powerpoint file xml dimension could not be parsed!", null);
                             }
                         }
-                        
-                        fclose($xmlFile);
                     }
                     else
                     {
