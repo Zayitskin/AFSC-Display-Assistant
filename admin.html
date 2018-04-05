@@ -1,18 +1,34 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
+	</head>
+	<body>
+
+		<h1>LUDAS Administrators</h1>
+
+		<table id="adminsTable">
+			<tr>
+				<th>Name</th>
+				<th>Privileges</th>
+      		</tr>
+		</table>
+		
+		<br>
+		<button onclick="ManagePage()">Manage Administrators</button>
+
 		<script>
-			var xmlhttp = new XMLHttpRequest();
 			var TheUsers;
+			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					TheUsers = JSON.parse(this.responseText);
 				}
 			};
-			
-			var table = document.getElementById("adminsTable");
-			
+			xmlhttp.open("GET", "users.json", true);
+			xmlhttp.send();	
+
 			xmlhttp.onload = function() {
+				var table = document.getElementById("adminsTable");
 				for(i in TheUsers.users){
 					if(TheUsers.users[i].user_flag == "admin"){
 						table.insertRow();
@@ -27,24 +43,6 @@
 				}
 			}
 			
-			xmlhttp.open("GET", "users.json", true);
-			xmlhttp.send();	
-		</script>	
-	</head>
-	<body>
-		<h1>LUDAS Administrators</h1>
-
-		<table id="adminsTable">
-			<tr>
-				<th>Name</th>
-				<th>Privileges</th>
-      			</tr>
-		</table>
-		
-		<br>
-		<button onclick="ManagePage()">Manage Administrators</button>
-
-		<script>
 			function ManagePage()
 			{
 				document.location.href = "userManagement.html";
