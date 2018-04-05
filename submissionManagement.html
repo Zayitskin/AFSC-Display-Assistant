@@ -7,6 +7,7 @@
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
 				uploads = JSON.parse(this.responseText);
 				}
 			};
@@ -34,6 +35,7 @@
 						form.setAttribute("id", slide.path);
 						var input = document.createElement("INPUT");
 						input.setAttribute("type", "radio");
+						input.setAttribute("name", "status");
 						input.setAttribute("value", "Undecided");
 						if(slide.value == "Undecided")
 						{
@@ -46,6 +48,7 @@
 						form.appendChild(document.createElement("BR"));
 						input = document.createElement("INPUT");
 						input.setAttribute("type", "radio");
+						input.setAttribute("name", "status");
 						input.setAttribute("value", "Approve");
 						if(slide.value == "Approve")
 						{
@@ -58,6 +61,7 @@
 						form.appendChild(document.createElement("BR"));
 						input = document.createElement("INPUT");
 						input.setAttribute("type", "radio");
+						input.setAttribute("name", "status");
 						input.setAttribute("value", "Reject");
 						if(slide.value == "Reject")
 						{
@@ -74,7 +78,7 @@
 					});
 				});
 			};
-			xmlhttp.open("GET", "uploads.json", true);
+			xmlhttp.open("GET", "uploads.json?_=" + new Date().getTime(), true);
 			xmlhttp.send();
 		</script>
 	</head>
