@@ -81,6 +81,12 @@
 			xmlhttp.open("GET", "uploads.json?_=" + new Date().getTime(), true);
 			xmlhttp.send();
 		</script>
+		<script>
+			function update() {
+				var table = document.getElementById("submissions");
+				console.log(table);
+			}
+		</script>
 	</head>
 	<body>
 		<table id="submissions">
@@ -90,7 +96,7 @@
 				<th>Date</th>
 				<th>Status</th>
 				<th>
-					<center><button>Update All</button></center>
+					<center><button onclick="update()">Update All</button></center>
 				</th>
 			</tr>
 		</table>
