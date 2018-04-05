@@ -14,16 +14,15 @@
 			
 			xmlhttp.onload = function() {
 				for(i in TheUsers.users){
-					table.insertRow();
-					var row = table.rows[table.rows.length-1];
-					row.insertCell();
-					var cell = row.cells[0];
 					if(TheUsers.users[i].user_flag == "admin"){
+						table.insertRow();
+						var row = table.rows[table.rows.length-1];
+						row.insertCell();
+						var cell = row.cells[0];
 						cell.innerHTML = TheUsers.users[i].user_name;
 						row.insertCell();
 						cell = row.cells[1];
 						cell.innerHTML = "Administrator";
-						row.insertCell();
 					}
 				}
 			}
