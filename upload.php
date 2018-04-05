@@ -108,6 +108,8 @@ function uploadSlide()
                         
                         if($fileCount > 1)
                         {
+                            unset($fileIterator);
+						    unset($fileCount);
                             removeTemporary($index);
                             sendMessage(false, false, "Powerpoint file contains more than one slide. File must contain only one slide!", null);
                         }
@@ -155,7 +157,6 @@ function uploadSlide()
                     }
                     else
                     {
-                        $zip->close();
                         removeTemporary($index);
                         sendMessage(false, false, "Could not unzip the pptx file!", null);
                     }
