@@ -12,21 +12,23 @@
 		<p id="Message"></p> 
 
 		<br>
-		<button onclick="AddUsers()">Make Admin</button>
-		<button onclick="BanUsers()">Ban User</button>
-		<button onclick="MakeUsers()">Make User</button>
+		<button name="AddUsers">Make Admin</button>
+		<button name="BanUsers">Ban User</button>
+		<button name="MakeUsers">Make User</button>
 
+		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 		<script>
-
-          	var xmlhttp = new XMLHttpRequest();
-		var TheUsers;
-		xmlhttp.onreadystatechange = function() {
-    			if (this.readyState == 4 && this.status == 200) {
-	        		TheUsers = JSON.parse(this.responseText);
-    			}
-		};
-		xmlhttp.open("GET", "users.json", true);
-		xmlhttp.send();
+		
+	        var xmlhttp = new XMLHttpRequest();
+			var TheUsers;
+			var userLocation = 0;
+			xmlhttp.onreadystatechange = function() {
+	    			if (this.readyState == 4 && this.status == 200) {
+		        		TheUsers = JSON.parse(this.responseText);
+	    			}
+			};
+			xmlhttp.open("GET", "users.json", true);
+			xmlhttp.send();
 				
 			function SearchUsers()
 			{
@@ -35,43 +37,164 @@
 				for(i in TheUsers.users){
 					if(searchedUser == TheUsers.users[i].user_name){
 						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + ": " + TheUsers.users[i].user_flag;
+						userLocation = i;
 						Flag = "1";
 					}
 					if(Flag == "0"){
 						document.getElementById("Message").innerHTML = "Search again, " + searchedUser + " not found";
 					}	
 				}
-	        	}
-			function AddUsers()
-			{
-				var searchedUser = document.getElementById("User").value;
-				for(i in TheUsers.users){
-					if(searchedUser == TheUsers.users[i].user_name){
-						TheUsers.users[i].user_flag = "admin";
-						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + " is a " +TheUsers.users[i].user_flag;
-					}	
-				}
-			}
-			function BanUsers()
-			{
-				var searchedUser = document.getElementById("User").value;
-				for(i in TheUsers.users){
-					if(searchedUser == TheUsers.users[i].user_name){
-						TheUsers.users[i].user_flag = "banned";
-						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + " is a " +TheUsers.users[i].user_flag +" user";
-					}	
-				}
-			}
-			function MakeUsers()
-			{
-				var searchedUser = document.getElementById("User").value;
-				for(i in TheUsers.users){
-					if(searchedUser == TheUsers.users[i].user_name){
-						TheUsers.users[i].user_flag = "users";
-						document.getElementById("Message").innerHTML = TheUsers.users[i].user_name + " is a user";
-					}	
-				}
-			}
+	        }
+
+			$('document').ready(function()
+	    	{
+	        //Replace "yourButton" with name/id of the button that submits the form.
+	            $('#AddUsers').click(function(event)
+	            {
+	                
+	            	var searchedUser = document.getElementById("User").value;
+					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " +TheUsers.users[userLocation].user_flag;
+
+	                event.preventDefault();
+	                var encodedJSONData = JSON.stringify("admin"); 
+	            
+	                $.ajax(
+	                {
+	                url : "jsonEdit.php",
+	                type: "POST",
+	                data : new FormData(),
+	                processData: false,
+	                contentType: false,
+	                beforeSend: function()
+	                {
+	                    this.data.append('action', 'editUsers');
+	                    this.data.append('jsonData', encodedJSONData);
+	                },
+	                success:function(msg)
+	                {
+	                    var response = JSON.parse(msg);
+	                    
+	                    if(response.succeeded == false)
+	                    {
+	                        alert(response.errorMessage);
+	                        
+	                        if(response.hasSessionError == true)
+	                        {
+	                            window.location.replace("userManagement.html");
+	                        }
+	                    }
+	                    else
+	                    {
+	                        window.location.replace("userManagement.html");
+	                    }
+	                    },
+	                    failure:function(msg)
+	                    {
+	                        alert(msg);
+	                    }
+	                });
+	            })
+	        })
+
+	        $('document').ready(function()
+	    	{
+	        //Replace "yourButton" with name/id of the button that submits the form.
+	            $('#BanUsers').click(function(event)
+	            {
+
+	            	var searchedUser = document.getElementById("User").value;
+					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " + TheUsers.users[userLocation].user_flag +" user";
+
+	                event.preventDefault();
+	                var encodedJSONData = JSON.stringify("banned"); 
+	            
+	                $.ajax(
+	                {
+	                url : "jsonEdit.php",
+	                type: "POST",
+	                data : new FormData(),
+	                processData: false,
+	                contentType: false,
+	                beforeSend: function()
+	                {
+	                    this.data.append('action', 'editUsers');
+	                    this.data.append('jsonData', encodedJSONData);
+	                },
+	                success:function(msg)
+	                {
+	                    var response = JSON.parse(msg);
+	                    
+	                    if(response.succeeded == false)
+	                    {
+	                        alert(response.errorMessage);
+	                        
+	                        if(response.hasSessionError == true)
+	                        {
+	                            window.location.replace("userManagement.html");
+	                        }
+	                    }
+	                    else
+	                    {
+	                        window.location.replace("userManagement.html");
+	                    }
+	                },
+	                    failure:function(msg)
+	                    {
+	                        alert(msg);
+	                    }
+	                });
+	            })
+	        })
+
+	        $('document').ready(function()
+	    	{
+	        //Replace "yourButton" with name/id of the button that submits the form.
+	            $('#MakeUsers').click(function(event)
+	            {
+	            	var searchedUser = document.getElementById("User").value;
+					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a user";
+
+	                event.preventDefault();
+	                var encodedJSONData = JSON.stringify("user"); 
+	            
+	                $.ajax(
+	                {
+		                url : "jsonEdit.php",
+		                type: "POST",
+		                data : new FormData(),
+		                processData: false,
+		                contentType: false,
+		                beforeSend: function()
+		                {
+		                    //Replace "editWhatever" with either "editUsers" or "editUploads"
+		                    this.data.append('action', 'editUsers');
+		                    this.data.append('jsonData', encodedJSONData);
+		                },
+		                success:function(msg)
+		                {
+		                    var response = JSON.parse(msg);
+		                    
+		                    if(response.succeeded == false)
+		                    {
+		                        alert(response.errorMessage);
+		                        
+		                        if(response.hasSessionError == true)
+		                        {
+		                            window.location.replace("userManagement.html");
+		                        }
+		                    }
+		                    else
+		                    {
+		                        window.location.replace("userManagement.html");
+		                    }
+		                },
+		                    failure:function(msg)
+		                    {
+		                        alert(msg);
+		                    }
+	                });
+	            })
+	        })
 			
 		</script>
 	</body>
