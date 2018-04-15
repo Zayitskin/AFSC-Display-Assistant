@@ -1,4 +1,4 @@
-<html>
+	<html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="ludas.css">
 	</head>
@@ -53,10 +53,10 @@
 	            {
 	                
 	            	var searchedUser = document.getElementById("User").value;
-					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " +TheUsers.users[userLocation].user_flag;
+					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " + TheUsers.users[userLocation].user_flag;
 
 	                event.preventDefault();
-	                var encodedJSONData = JSON.stringify("admin"); 
+	                var encodedJSONData = JSON.stringify("TheUsers.users[userLocation].user_flag"); 
 	            
 	                $.ajax(
 	                {
@@ -106,7 +106,7 @@
 					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " + TheUsers.users[userLocation].user_flag +" user";
 
 	                event.preventDefault();
-	                var encodedJSONData = JSON.stringify("banned"); 
+	                var encodedJSONData = JSON.stringify("TheUsers.users[userLocation].user_flag"); 
 	            
 	                $.ajax(
 	                {
@@ -155,7 +155,7 @@
 					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a user";
 
 	                event.preventDefault();
-	                var encodedJSONData = JSON.stringify("user"); 
+	                var encodedJSONData = JSON.stringify("TheUsers.users[userLocation].user_flag"); 
 	            
 	                $.ajax(
 	                {
@@ -198,4 +198,4 @@
 			
 		</script>
 	</body>
-</html>
+</html>	
