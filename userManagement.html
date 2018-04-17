@@ -12,7 +12,7 @@
 		<p id="Message"></p> 
 
 		<br>
-		<button name="AddUsers">Make Admin</button>
+		<button name="AddAdmin">Make Admin</button>
 		<button name="BanUsers">Ban User</button>
 		<button name="MakeUsers">Make User</button>
 
@@ -46,17 +46,18 @@
 				}
 	        }
 
+	        //admin
 			$('document').ready(function()
 	    	{
 	        //Replace "yourButton" with name/id of the button that submits the form.
-	            $('#AddUsers').click(function(event)
+	            $('#AddAdmin').click(function(event)
 	            {
-	                
-	            	var searchedUser = document.getElementById("User").value;
+	
+	            	TheUsers.users[userLocation].user_flag = "admin";
 					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " + TheUsers.users[userLocation].user_flag;
 
 	                event.preventDefault();
-	                var encodedJSONData = JSON.stringify("TheUsers.users[userLocation].user_flag"); 
+	                var encodedJSONData = JSON.stringify("TheUsers"); 
 	            
 	                $.ajax(
 	                {
@@ -96,17 +97,17 @@
 	            })
 	        })
 
+			//Banned
 	        $('document').ready(function()
 	    	{
 	        //Replace "yourButton" with name/id of the button that submits the form.
 	            $('#BanUsers').click(function(event)
 	            {
-
-	            	var searchedUser = document.getElementById("User").value;
+	            	TheUsers.users[userLocation].user_flag = "banned";
 					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a " + TheUsers.users[userLocation].user_flag +" user";
 
 	                event.preventDefault();
-	                var encodedJSONData = JSON.stringify("TheUsers.users[userLocation].user_flag"); 
+	                var encodedJSONData = JSON.stringify("TheUsers"); 
 	            
 	                $.ajax(
 	                {
@@ -146,16 +147,17 @@
 	            })
 	        })
 
+	        //user
 	        $('document').ready(function()
 	    	{
 	        //Replace "yourButton" with name/id of the button that submits the form.
 	            $('#MakeUsers').click(function(event)
 	            {
-	            	var searchedUser = document.getElementById("User").value;
+					TheUsers.users[userLocation].user_flag = "user";
 					document.getElementById("Message").innerHTML = TheUsers.users[userLocation].user_name + " is a user";
-
+					
 	                event.preventDefault();
-	                var encodedJSONData = JSON.stringify("TheUsers.users[userLocation].user_flag"); 
+	                var encodedJSONData = JSON.stringify("TheUsers"); 
 	            
 	                $.ajax(
 	                {
@@ -198,4 +200,5 @@
 			
 		</script>
 	</body>
-</html>	
+</html>
+	
